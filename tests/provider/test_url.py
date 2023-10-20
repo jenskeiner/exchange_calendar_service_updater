@@ -29,7 +29,7 @@ class TestUrlUpdater:
 
         mock_thread_class.return_value = mock_thread_instance
 
-        def mock_thread_class_side_effect(target, *args, **kwargs):
+        def mock_thread_class_side_effect(target, daemon=False):
             setattr(mock_thread_instance, '_target', target)
             return mock_thread_instance
 
@@ -85,7 +85,7 @@ class TestUrlUpdater:
         updater.setup(mock_change_handler, mock_error_handler)
 
         # Assert that a new thread was created.
-        mock_thread_class.assert_called_once_with(target=ANY)
+        mock_thread_class.assert_called_once_with(target=ANY, daemon=True)
 
         # Assert that the thread's target is a valid callable.
         assert callable(mock_thread_instance._target)
