@@ -10,7 +10,7 @@ from exchange_calendar_service.updater.provider.gh_webhook import GitHubWebhookC
 from tests.provider.util import CHANGES_MODEL
 
 SECRET: str = "secret"
-BIND_HOST='0.0.0.0'
+BIND_HOST = '0.0.0.0'
 BIND_PORT: int = 1234
 PATH: str = "/webhook"
 URL: str = "http://example.com/test.yaml"
