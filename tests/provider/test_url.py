@@ -29,7 +29,11 @@ class TestUrlUpdater:
 
         mock_thread_class.return_value = mock_thread_instance
 
-        mock_thread_class.side_effect = lambda target: setattr(mock_thread_instance, '_target', target) or mock_thread_instance
+        def mock_thread_class_side_effect(target, *args, **kwargs):
+            setattr(mock_thread_instance, '_target', target)
+            return mock_thread_instance
+
+        mock_thread_class.side_effect = mock_thread_class_side_effect
 
         # Yield the mock instance for the tests to use if needed
         yield mock_thread_class, mock_thread_instance
