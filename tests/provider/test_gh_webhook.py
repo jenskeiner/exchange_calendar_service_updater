@@ -44,7 +44,7 @@ class TestGitHubWebHookProvider:
         """
         Test that setup sets up the FastAPI app, starts the webserver, and fetches the URL.
         """
-        mock_fetch_url = mocker.patch("exchange_calendar_service.updater.plugins.gh_webhook.fetch_url")
+        mock_fetch_url = mocker.patch("exchange_calendar_service.updater.provider.gh_webhook.fetch_url")
 
         # Set up mock fetch_url to return an arbitrary but unique initial digest.
         mock_fetch_url.return_value = "digest-0"

@@ -66,7 +66,7 @@ class TestUrlUpdater:
         # Unpack mock thread class and instance.
         mock_thread_class, mock_thread_instance = mock_threading
 
-        mock_fetch_url = mocker.patch("exchange_calendar_service.updater.plugins.url.fetch_url")
+        mock_fetch_url = mocker.patch("exchange_calendar_service.updater.provider.url.fetch_url")
 
         # Set up mock fetch_url to return an arbitrary but unique initial digest.
         mock_fetch_url.return_value = "digest-0"
