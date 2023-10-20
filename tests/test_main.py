@@ -7,7 +7,7 @@ import pytest
 import pytest_mock
 from exchange_calendars_extensions.api.changes import ChangeSetDict
 from pydantic import AnyHttpUrl
-from pydantic_core._pydantic_core import ValidationError
+from pydantic_core import ValidationError
 from typing_extensions import Literal, Callable, Union, Tuple
 
 import exchange_calendar_service.updater.__main__ as main
@@ -91,6 +91,7 @@ class TestOnChanges:
 
         # Should not be able to pass in other types, such as str.
         with pytest.raises(ValidationError):
+            # noinspection PyTypeChecker
             main._on_changes("foo")
 
         # Should not call _on_changes0.
