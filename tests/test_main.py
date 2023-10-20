@@ -606,7 +606,7 @@ class TestMainLoop:
             assert not t2.is_alive()
 
     @pytest.mark.parametrize("n_retries, delay", tuple(itertools.product([0, 1, 5, 10], [0, 0.1])))
-    def test_retry(self, mocker, mock_notify, context, n_retries: int, delay: Union[float | int]):
+    def test_retry(self, mocker, mock_notify, context, n_retries: int, delay: Union[float, int]):
         """Test main loop with a failing notification that succeeds after a number of retries.
 
         This test simulates a scenario where notifying the target fails a couple of times before it succeeds. While the
@@ -699,7 +699,7 @@ class TestMainLoop:
 
     @pytest.mark.parametrize("n_retries, delay, i_new_changes", tuple(itertools.product([0, 1, 5, 10], [0, 0.1], [0, 1, 5])))
     def test_retry_strategy_intermittent_new_changes(self, mocker: pytest_mock.MockerFixture, mock_notify: MagicMock,
-                                                     context: Context, n_retries: int, delay: Union[float | int],
+                                                     context: Context, n_retries: int, delay: Union[float, int],
                                                      i_new_changes: int):
         """Test main loop with intermittent new changes coming in while target has not yet been successfully notified.
 
@@ -935,7 +935,7 @@ class TestMainLoop:
 
     @pytest.mark.parametrize("n_retries, delay, i_new_changes", tuple(itertools.product([0, 1, 5, 10], [0, 0.1], [0, 1, 5])))
     def test_retry_strategy_intermittent_previous_changes(self, mocker: pytest_mock.MockerFixture, mock_notify: MagicMock,
-                                                          context: Context, n_retries: int, delay: Union[float | int],
+                                                          context: Context, n_retries: int, delay: Union[float, int],
                                                           i_new_changes: int):
         """Test main loop with intermittent old changes coming in while target has not yet been successfully notified.
 
