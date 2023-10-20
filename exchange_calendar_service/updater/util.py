@@ -17,10 +17,10 @@ def discover_entrypoints(group: str) -> Callable[[], Dict[str, Any]]:
         """
         try:
             import importlib.metadata as metadata
-            entry_points = metadata.entry_points(group=group)
+            entry_points = metadata.entry_points(group)
         except ImportError:
             import pkg_resources
-            entry_points = pkg_resources.iter_entry_points(group=group)
+            entry_points = pkg_resources.iter_entry_points(group)
 
         if entry_points is None:
             return {}
