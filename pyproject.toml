@@ -39,6 +39,7 @@ fixed = "exchange_calendar_service.updater.retry.fixed:FixedRetryPolicy"
 
 [tool.poetry.dependencies]
 python = "~=3.8"
+importlib_metadata = ">=3.6"
 exchange_calendars_extensions_api = { git = "https://github.com/jenskeiner/exchange_calendars_extensions_api.git", branch = "develop" }
 pydantic = ">=2,<3"
 pydantic-settings = ">=2.0,<3"
