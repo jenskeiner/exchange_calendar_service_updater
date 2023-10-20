@@ -8,7 +8,7 @@ on:
       - 'support/**'
 
 env:
-  PACKAGE_NAME: <package name>
+  PACKAGE_NAME: exchange_calendar_service_updater
 
 jobs:
   build-and-publish:
