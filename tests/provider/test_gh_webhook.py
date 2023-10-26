@@ -1,3 +1,4 @@
+from typing import Dict, Any
 from unittest.mock import ANY
 
 import httpx as httpx
@@ -62,7 +63,8 @@ class TestGitHubWebHookProvider:
         assert isinstance(updater._app, FastAPI)
 
         # Assert that the webserver was started.
-        mock_uvicorn_run.assert_called_once_with(updater._app, host=updater.server.bind_host, port=updater.server.bind_port)
+        mock_uvicorn_run.assert_called_once_with(updater._app, host=updater.server.bind_host, 
+                                                 port=updater.server.bind_port)
 
         # Assert that fetch_url was called a single time.
         mock_fetch_url.assert_called_once_with(updater.url, mock_change_handler, mock_error_handler, None)
@@ -114,13 +116,14 @@ class TestGitHubWebHookProvider:
         updater.secret = secret
 
         # Create test request body.
-        body: str = GITHUB_WEBHOOK_CONTENT.model_dump_json()
+        body: Dict[str, Any] = GITHUB_WEBHOOK_CONTENT.model_dump()
 
         # Create test headers.
         headers = {}
 
         if secret is not None:
-            headers["x-hub-signature-256"] = get_signature_header(body=body.encode('utf-8'), secret=secret)
+            headers["x-hub-signature-256"] = get_signature_header(
+                body=GITHUB_WEBHOOK_CONTENT.model_dump_json().encode('utf-8'), secret=secret)
 
         response: httpx.Response = client.post(updater.server.path, data=body, headers=headers)
 
@@ -150,7 +153,7 @@ class TestGitHubWebHookProvider:
         updater.secret = "secret"
 
         # Create test request body.
-        body: str = GITHUB_WEBHOOK_CONTENT.model_dump_json()
+        body: Dict[str, Any] = GITHUB_WEBHOOK_CONTENT.model_dump()
 
         # Send request w/o signature header.
         response: httpx.Response = client.post(updater.server.path, data=body)
@@ -181,10 +184,11 @@ class TestGitHubWebHookProvider:
         updater.secret = "secret"
 
         # Create test request body.
-        body: str = GITHUB_WEBHOOK_CONTENT.model_dump_json()
+        body: Dict[str, Any] = GITHUB_WEBHOOK_CONTENT.model_dump()
 
         # Create test headers.
-        headers = {"x-hub-signature-256": get_signature_header(body=body.encode('utf-8'), secret="foo")}
+        headers = {"x-hub-signature-256": get_signature_header(
+            body=GITHUB_WEBHOOK_CONTENT.model_dump_json().encode('utf-8'), secret="foo")}
 
         # Send request w/o signature header.
         response: httpx.Response = client.post(updater.server.path, data=body, headers=headers)

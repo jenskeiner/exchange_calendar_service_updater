@@ -13,6 +13,7 @@ class TestProvider:
     """
     A collection of tests for the FileChangeProvider class.
     """
+
     @pytest.fixture
     def mock_observer(self, mocker):
         """

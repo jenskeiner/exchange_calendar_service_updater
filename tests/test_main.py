@@ -84,6 +84,7 @@ class TestOnChanges:
 
         # Should not be able to pass in None.
         with pytest.raises(ValidationError):
+            # noinspection PyTypeChecker
             main._on_changes(None)
 
         # Should not call _on_changes0.
@@ -204,7 +205,7 @@ class TestMainLoop:
         return fn
 
     # Type alias for the context tuple.
-    Context = Tuple[threading.Condition, main.IncomingChanges, AppSettings]
+    Context = Tuple[threading.Condition, MagicMock, main.IncomingChanges, AppSettings]
 
     @pytest.fixture
     def context(self, mocker) -> Context:
@@ -682,7 +683,7 @@ class TestMainLoop:
                 # Exception should always be the same.
                 assert args[0].exception == notify_exception
                 # Since should be a float.
-                assert type(args[0].since) == float
+                assert isinstance(args[0].since, float)
 
             # Assert incoming changes holder is re-set.
             assert incoming.changes is None
@@ -846,7 +847,7 @@ class TestMainLoop:
                     # must be the total number of re-tries.
                     assert args[0].fails == i_new_changes
                     assert args[0].exception == notify_exception
-                    assert type(args[0].since) == float
+                    assert isinstance(args[0].since, float)
 
                 # Assert incoming changes holder is re-set.
                 assert incoming.changes is None
@@ -915,7 +916,7 @@ class TestMainLoop:
                     # returns normally. So all n_retries calls to the retry policy have happened before.
                     assert args[0].fails == n_retries
                 assert args[0].exception == notify_exception
-                assert type(args[0].since) == float
+                assert isinstance(args[0].since, float)
 
             # Assert incoming changes holder is re-set.
             assert incoming.changes is None

@@ -1,5 +1,6 @@
 import hashlib
 import logging
+from typing import Optional
 
 import requests
 from exchange_calendars_extensions.api.changes import ChangeSetDict
@@ -29,7 +30,7 @@ def digest_changes(changes: ChangeSetDict) -> str:
     return hashlib.sha256(changes.model_dump_json().encode('utf-8')).hexdigest()
 
 
-def fetch_url(url: str, change_handler: ChangeHandler, error_handler: ErrorHandler, digest: str) -> str:
+def fetch_url(url: str, change_handler: ChangeHandler, error_handler: ErrorHandler, digest: Optional[str]) -> str:
     try:
         log.debug(f"Fetching URL {url}.")
         try:

@@ -13,7 +13,7 @@ try:
     import hashlib
     import hmac
 
-    def get_signature_header(body: str, secret: str) -> str:
+    def get_signature_header(body: bytes, secret: str) -> str:
         """Return the signature expected in the x-hub-signature-256 request header for the given request body and
         secret.
 
