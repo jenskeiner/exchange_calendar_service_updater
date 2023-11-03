@@ -5,8 +5,8 @@ type: docs
 layout: "single"
 
 menu:
-  docs:
-    weight: 0
+  docs_updater:
+      weight: 0
 ---
 
 # Introduction
