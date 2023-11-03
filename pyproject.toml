@@ -3,15 +3,15 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "<package name>"
-version = "<version>"
-description = "<description>"
+name = "exchange-calendar-service-updater"
+version = "0"
+description = "App to automatically update an instance of Exchange Calendar Service via the HTTP API."
 license = "Apache-2.0"
 authors = ["Jens Keiner <jens.keiner@gmail.com>"]
 readme = "README.md"
-homepage = "https://github.com/jenskeiner/<repository name>/"
-repository = "https://github.com/jenskeiner/<repository name>/"
-documentation = "https://github.com/jenskeiner/<repository name>/tree/main/docs/"
+homepage = "https://github.com/jenskeiner/exchange_calendar_service_updater/"
+repository = "https://github.com/jenskeiner/exchange_calendar_service_updater/"
+documentation = "https://github.com/jenskeiner/exchange_calendar_service_updater/tree/main/docs/"
 keywords = ["keywords..."]
 classifiers = [
 	"Development Status :: 4 - Beta",
@@ -26,18 +26,47 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Mathematics",
     "Operating System :: OS Independent",
 ]
-packages = [{include = "<package name>"}]
+packages = [{include = "exchange_calendar_service"}]
+
+[tool.poetry.plugins."exchange_calendar_service_updater.providers"]
+file = "exchange_calendar_service.updater.provider.file:FileChangeProvider"
+url = "exchange_calendar_service.updater.provider.url:UrlChangeProvider"
+gh_webhook = "exchange_calendar_service.updater.provider.gh_webhook:GitHubWebhookChangeProvider"
+
+[tool.poetry.plugins."exchange_calendar_service_updater.retry_policies"]
+exponential_back_off = "exchange_calendar_service.updater.retry.exp:ExponentialBackOffRetryPolicy"
+fixed = "exchange_calendar_service.updater.retry.fixed:FixedRetryPolicy"
 
 [tool.poetry.dependencies]
 python = "~=3.8"
+importlib_metadata = ">=3.6"
+exchange_calendars_extensions_api = { git = "https://github.com/jenskeiner/exchange_calendars_extensions_api.git", branch = "develop" }
+pydantic = ">=2,<3"
+pydantic-settings = ">=2.0,<3"
+requests = "2.31.0"
+
+# Optional dependencies.
+pyyaml = { version = "6.0.1", optional = true}
+watchdog = { version = "3.0.0", optional = true }
+fastapi = { version = ">=0.100,<1", optional = true}
+uvicorn = { version = "0.23.2", optional = true}
+pytest = "^7.4.0"
+httpx = "^0.24.1"
+
+[tool.poetry.extras]
+file = ["watchdog", "pyyaml"]
+url = ["pyyaml"]
+gh_webhook = ["fastapi", "uvicorn", "pyyaml"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.3.1,<7.5.0"
+pytest-mock = "~=3.11.1"
 pytest-cov = "~=4.1.0"
 pre-commit = "~=3.3.3"
+httpx = "~=0.24.1"
 
-[tool.pytest.ini_options]
-addopts = "--cov=exchange_calendars_extensions --cov-report=term-missing"
+#[tool.pytest.ini_options]
+#addopts = "--cov=exchange_calendar_service.updater --cov-report=term-missing"
 
 [tool.ruff]
 # Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
@@ -74,7 +103,7 @@ exclude = [
 ]
 
 # Same as Black.
-line-length = 88
+line-length = 120
 
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
